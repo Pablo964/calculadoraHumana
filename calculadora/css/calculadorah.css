@@ -1,0 +1,155 @@
+body 
+{
+	font-family: Arial, "Free Sans";
+	margin: 0;
+	padding: 0;
+}
+
+#container
+{
+	width: 1010px;
+	margin: 0 auto;
+}
+
+h1,h2
+{
+	text-align: center;
+}
+
+h2 {
+	color: blue;
+}
+
+#numeros_container 
+{
+	width: 610px;
+	margin: 0 auto;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+#operadores_container 
+{
+	width: 510px;
+	margin: 0 auto;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.numeros, .numerosCopia
+{
+	background: #fff;
+	float: left;
+	padding: 5px;
+	margin: 5px;
+	-webkit-box-shadow: 0 1px 2px rgba(0,0,0,.5);
+	-moz-box-shadow: 0 1px 2px rgba(0,0,0,.5);
+	box-shadow: 0 1px 2px rgba(0,0,0,.5);
+	-webkit-border-radius: .5em;
+	-moz-border-radius: .5em;
+	border-radius: .5em;
+	z-index: 5;
+	cursor:pointer;
+}
+
+.usos
+{
+	display: block;
+	text-align: center;
+	font-size: 14px;
+	color: #007799;
+	letter-spacing: -1px;
+	font-weight: bold;
+	cursor:pointer;
+}
+
+#panel_info 
+{
+	width: 843px;
+	margin: 0 auto;
+	border: 8px solid rgb(156, 156, 156);
+	-webkit-border-radius: .5em .5em 0 0;
+	-moz-border-radius: .5em .5em 0 0;
+	border-radius: .5em .5em 0 0;
+	padding: 10px;
+	font-size: 14px;
+	background: #666;
+	font-weight: bold;
+	line-height: 50px;
+}
+
+#btn_comenzar {
+	width: 80px;
+	height: 30px;
+	margin: 0 20px 0 20px;
+	background-color: rgb(212, 212, 169);
+}
+
+input{
+    background-color: #DDDDDD;
+    border: 0 none;
+    border-radius: 3px 3px 3px 3px;
+	width: 70px;
+	height: 20px;
+    margin: 3px 40px 0 15px;
+    text-align: center;
+}
+
+#tiempo 
+{
+	background-color: blue;
+	color: #fff;
+	width: 80px;
+	height: 30px;
+	font-size: 24px;
+}
+
+
+#panel_operaciones 
+{
+	width: 843px;
+	height: 290px;
+	margin: 0 auto;
+	border: 8px solid rgb(156, 156, 156);
+	border-top-width: 0;
+	-webkit-border-radius: 0 0 .5em .5em;
+	-moz-border-radius: 0 0 .5em .5em;
+	border-radius: 0 0 .5em .5em;
+	padding: 10px;
+	overflow: hidden;
+	background: #ffffff;
+}
+
+.agotado
+{
+	color: red;
+	text-decoration: line-through;
+	display: block;
+	text-align: center;
+	font-size: 14px;
+	letter-spacing: -1px;
+	font-weight: bold;
+	cursor:pointer;
+}
+
+.delete
+{
+	background:url(../img/delete.png);
+}
+
+.delete:hover 
+{
+	background-image:url(../img/delete-hover.png);
+}
+
+a.delete {
+	display: block;
+    border: 0 none;
+    cursor: pointer;
+    height: 16px;
+	width: 16px;
+	position: relative;
+	left: 80px;
+	z-index: 10;
+    margin: 6px 2px 0 0;
+}
