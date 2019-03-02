@@ -100,6 +100,7 @@ function compruebaResultado() {
 
 function actualizaResultado() {
 	let resActual = document.getElementById("ractual");
+	//resActual.value = 100;
 	// Completar... (22 líneas)
 	let res = 0;
 	// Para calcular el resultado y actualizarlo, hace falta tener un número más que operadores
@@ -107,25 +108,37 @@ function actualizaResultado() {
 	{
 		resActual.value = 0;
 	}
-	else if (numeros.length == (operadores.length + 1))
+	else if (numeros.length > 1 && numeros.length == (operadores.length + 1))
 	{
 		for (let i = 0; i < numeros.length; i++) 
 		{
-			if (operadores.includes("*")) 
+			if (operadores[i] == "*")
 			{
-				res += numeros[i]*numeros[i + 1];
+				if(res == 0)
+				{
+					res += numeros[i]*numeros[i + 1];
+				}
+				else
+				{
+					res = numeros[i]*res;
+				}
+				alert(res);
+			
 			}
-			else if (operadores.includes("+")) 
+			else if (operadores[i] == "+")
 			{
-				res += numeros[i]+numeros[i + 1];
+				res += Number(numeros[i])+ Number(numeros[i + 1]);
 			}
-			else if (operadores.includes("-")) 
+			else if (operadores[i] == "-") 
 			{
 				res += numeros[i]-numeros[i + 1];
+				alert(res);
+				
 			}
-			else if (operadores.includes("/")) 
+			else if (operadores[i] == "/")
 			{
 				res += numeros[i]/numeros[i + 1];
+				alert(res);
 			}
 		}
 
@@ -153,16 +166,20 @@ function anadeElementoPanel(enlace) {
 	// Sobre esta copia:
 	if (enlace.parentNode.id.includes("n")) 
 	{
-		numeros[posNum] = enlace.parentNode.id;
+		let numero = enlace.parentNode.id.charAt(1);
+		numeros.push(numero);
 		posNum++;
-		console.log(numeros);
 	}
 	else
 	{
-		operadores[posOperador] = enlace.parentNode.id;
+		let operador = enlace.parentNode.id.charAt(1);
+		
+		operadores.push(operador);
+		//enlace.parentNode.id;
 		posOperador++;
-		console.log(operadores);
 	}
+
+	console.log(numeros.length);
 	// 1) Añadimos al id la posición del elemento dentro del panel
 	copia.setAttribute("id", copia.id + 'e' + i );
 	i++;
