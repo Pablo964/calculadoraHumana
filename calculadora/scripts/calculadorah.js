@@ -29,7 +29,7 @@ function comienzaElJuego() {
 	// 3) Cambiar el nombre del botón a "Jugando..."
 	document.getElementById("btn_comenzar").innerHTML = "Jugando..."; 
 	//4) Calcular el valor a Adivinar con la función math
-	document.getElementById("robtener").value =  Math.floor(Math.random()*100+1);
+	document.getElementById("robtener").value =  Math.floor(Math.random()* numeroMaximo + numeroMinimo);
 	// Mostrar la información
 	cambiaCursor("pointer", true);	// Ya se pueden seleccionar los números y los operadores
 }
@@ -42,29 +42,62 @@ function actualizaTiempo() {
 	let valor = tiempo.value - 1;
 	tiempo.value = valor;
 
-	if (valor <= 0) {
-		tiempo.value = tiempoMaximo;
-		clearInterval(contador);
+	if (valor == 0) 
+	{
+		inicializaPanel();	
 		alert("Tiempo agotado");
-		inicializaPanel();
+		tiempo.value = tiempoMaximo;
+		clearInterval(contador);	
 	}
 }
 
 /* Borra e inicializa todos los elementos del panel (tanto en la cabecera como 
 	los números y operadores contenidos */
 function inicializaPanel() {
-	
 	// Completar... (15 líneas)
 	// 1) Desactivar el acceso a las etiquetas (llamar a la función cambiaCursor con default y false)
 	cambiaCursor("default", false);	
 	// 2) Borrar todos los elementos que hay en el panel, accede al panel_operaciones y 
-	// con un bucle elimina cada elemento con removeChild. 
+	// con un bucle elimina cada elemento con removeChild.
+	let panel = document.getElementById("panel_operaciones");
+	while(panel.childNodes.length > 0) 
+	{
+		panel.removeChild(panel.firstChild);	
+	}	
 	// 3) Vaciar los arrays números y operadores
+	numeros = [];
+	operadores = [];
 	// 4) Reestablecer los valores de las etiquetas de panel_info, a los valores iniciales (tiempo, ractual, robtener)
+	document.getElementById("ractual").value = 0;
+	document.getElementById("robtener").value = 0;
 	// 5) Habilita el botón ‘Comenzar’ y cambiarle el nombre a "Comenzar"
+	document.getElementById("btn_comenzar").innerHTML = "Comenzar";
+	document.getElementById("btn_comenzar").disabled = false;
 	// 6) Accediendo a los elementos de la clase "numeros", volver a reestablecer las etiquetas de usos, 
 	// es decir, poner con valor ‘Usos 2’ y cambiar la clase a ‘usos’
+	for (let i = 1; i < 11; i++) 
+	{
+		let num = document.getElementById("n" + i);
+		num.lastElementChild.innerHTML = "Usos 2";
+		num.lastElementChild.setAttribute("class", "usos");
+	}
+	
+	let op1 = document.getElementById("o+");
+	let op2 = document.getElementById("o-");	
+	let op3 = document.getElementById("o*");
+	let op4 = document.getElementById("o/");
 
+	op1.lastElementChild.innerHTML = "Usos 2";
+	op2.lastElementChild.innerHTML = "Usos 2";
+	op3.lastElementChild.innerHTML = "Usos 2";
+	op4.lastElementChild.innerHTML = "Usos 2";
+
+	op1.lastElementChild.setAttribute("class", "usos");	
+	op2.lastElementChild.setAttribute("class", "usos");
+	op3.lastElementChild.setAttribute("class", "usos");
+	op4.lastElementChild.setAttribute("class", "usos");
+
+	//----------------------------------
 
 }
 
@@ -120,25 +153,41 @@ function actualizaResultado() {
 				}
 				else
 				{
-					res = numeros[i]*res;
-				}
-				alert(res);
-			
+					res *= numeros[i + 1];
+				}			
 			}
 			else if (operadores[i] == "+")
 			{
-				res += Number(numeros[i])+ Number(numeros[i + 1]);
+				if (res == 0) 
+				{
+					res += (Number(numeros[i]) + Number(numeros[i + 1]));					
+				}
+				else
+				{
+					res += Number(numeros[i + 1]);					
+				}
 			}
 			else if (operadores[i] == "-") 
 			{
-				res += numeros[i]-numeros[i + 1];
-				alert(res);
-				
+				if (res == 0) 
+				{
+					res += numeros[i]-numeros[i + 1];								
+				}
+				else
+				{
+					res -= numeros[i + 1];
+				}
 			}
 			else if (operadores[i] == "/")
 			{
-				res += numeros[i]/numeros[i + 1];
-				alert(res);
+				if (res == 0) 
+				{
+					res += numeros[i]/numeros[i + 1];					
+				}
+				else
+				{
+					res/= numeros[i + 1];
+				}
 			}
 		}
 
@@ -166,7 +215,7 @@ function anadeElementoPanel(enlace) {
 	// Sobre esta copia:
 	if (enlace.parentNode.id.includes("n")) 
 	{
-		let numero = enlace.parentNode.id.charAt(1);
+		let numero = enlace.parentNode.id.substr(1,2);
 		numeros.push(numero);
 		posNum++;
 	}
@@ -178,8 +227,6 @@ function anadeElementoPanel(enlace) {
 		//enlace.parentNode.id;
 		posOperador++;
 	}
-
-	console.log(numeros.length);
 	// 1) Añadimos al id la posición del elemento dentro del panel
 	copia.setAttribute("id", copia.id + 'e' + i );
 	i++;
@@ -211,7 +258,6 @@ function actualizaUsos(enlace, cantidad)
 {
 
 	// Completar... (22 líneas)
-
 	let usos = enlace.innerHTML.split(" ");
 	let u = Number(usos[1]);
 	// Usando split troceamos el contenido del enlace y podemos obtener el número de usos
@@ -240,10 +286,38 @@ function actualizaUsos(enlace, cantidad)
 /* función que comprueba si se debe añadir un número o un operador.
 	Nunca puede comenzar por operador, ni acabar en un operador */
 function operacionPermitida(enlace) {
-	return true;
 	// Completar... (15 líneas)
 	// Explicación y Pista dadas en el enunciado
-
+	let primero;
+	let siguiente;
+	let cont = 0;
+	if(enlace.parentNode.id.charAt(1) > 0 && enlace.parentNode.id.charAt(1) < 11)
+	{
+		if (numeros.length == 0 && operadores.length == 0) 
+		{
+			return true;
+		}
+		else if(numeros.length == (operadores.length))
+		{
+			return true;
+		}
+	}
+	else if((enlace.parentNode.id.charAt(1) == "*" 
+			|| enlace.parentNode.id.charAt(1) == "+"
+			|| enlace.parentNode.id.charAt(1) == "-" 
+			|| enlace.parentNode.id.charAt(1) == "/"))
+	{
+		if(numeros.length == 0)
+			return false;
+		else if (operadores.length == (numeros.length - 1)) 
+		{
+			return true;			
+		}
+	}
+	else
+	{
+		return false;
+	}
 }
 
 /* Cambia el cursor de los números y operadores para que se puedan seleccionar */
